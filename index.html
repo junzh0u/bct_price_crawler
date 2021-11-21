@@ -1,7 +1,9 @@
 <html>
     <head>
         <title>Bridge City Tools Price Tracker</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
     </head>
     <body>
         <canvas id="myChart"></canvas>
@@ -36,6 +38,9 @@
                         },
                         options: {
                             scales: {
+                                x: {
+                                    type: 'time',
+                                },
                                 y: {
                                     beginAtZero: true
                                 }
