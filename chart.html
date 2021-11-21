@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>Bridge City Tools Price Tracker</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <canvas id="myChart"></canvas>
+        <script>
+            fetch("https://s3.junz.info/dumps/bct_prices.json")
+                .then(response => response.json())
+                .then(data => {
+                    var dates = [...new Set(data.map(p => p.Time))].sort();
+                    var products = [...new Set(data.map(p => p.Name))].sort();
+                    var product2date2price = {};
+                    data.forEach(p => {
+                        if (!(p.Name in product2date2price)) {
+                            product2date2price[p.Name] = {}
+                        }
+                        product2date2price[p.Name][p.Time] = p.Price;
+                    });
+                    console.log(product2date2price);
+                    var datasets = products.map(p => {
+                        console.log(p);
+                        var prices = dates.map(d => product2date2price[p][d]);
+                        console.log(prices);
+                        return {
+                            label: p,
+                            data: prices,
+                            hidden: true,
+                        };
+                    });
+                    console.log(datasets);
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: datasets,
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+            
+        </script>
+    </body>
+</html>
