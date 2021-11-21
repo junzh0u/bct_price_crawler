@@ -52,7 +52,7 @@
                             },
                         }
                     });
-                    document.getElementById("myChart").addEventListener("mousemove", (e) => {
+                    function refreshURL() {
                         var url = new URL(location.href);
                         url.searchParams.set(
                             "products",
@@ -61,7 +61,8 @@
                         if (location.href != url.toString()) {
                             window.history.pushState("", "", url.toString());
                         }
-                    });
+                    }
+                    setInterval(refreshURL, 100);
                 });
             
         </script>
