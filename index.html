@@ -6,6 +6,7 @@
     <body>
         <canvas id="myChart"></canvas>
         <script>
+            var currentProduct = new URL(location.href).searchParams.get("product");
             fetch("https://s3.junz.info/dumps/bct_prices.json")
                 .then(response => response.json())
                 .then(data => {
@@ -18,18 +19,14 @@
                         }
                         product2date2price[p.Name][p.Time] = p.Price;
                     });
-                    console.log(product2date2price);
                     var datasets = products.map(p => {
-                        console.log(p);
                         var prices = dates.map(d => product2date2price[p][d]);
-                        console.log(prices);
                         return {
                             label: p,
                             data: prices,
-                            hidden: true,
+                            hidden: (p != currentProduct),
                         };
                     });
-                    console.log(datasets);
                     const ctx = document.getElementById('myChart').getContext('2d');
                     const myChart = new Chart(ctx, {
                         type: 'line',
