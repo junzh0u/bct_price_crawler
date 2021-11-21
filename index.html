@@ -10,7 +10,7 @@
     <body>
         <canvas id="myChart"></canvas>
         <script>
-            var currentProduct = new URL(location.href).searchParams.get("product");
+            var initProducts = JSON.parse(new URL(location.href).searchParams.get("products")) || [];
             fetch("https://s3.junz.info/dumps/bct_prices.json")
                 .then(response => response.json())
                 .then(data => {
@@ -29,7 +29,7 @@
                         return {
                             label: p,
                             data: prices,
-                            hidden: (p != currentProduct),
+                            hidden: !initProducts.includes(p),
                             backgroundColor: color,
                             borderColor: color,
                         };
@@ -49,7 +49,17 @@
                                 y: {
                                     beginAtZero: true
                                 }
-                            }
+                            },
+                        }
+                    });
+                    document.getElementById("myChart").addEventListener("mousemove", (e) => {
+                        var url = new URL(location.href);
+                        url.searchParams.set(
+                            "products",
+                            JSON.stringify(myChart.getSortedVisibleDatasetMetas().map(m => m.label)),
+                        );
+                        if (location.href != url.toString()) {
+                            window.history.pushState("", "", url.toString());
                         }
                     });
                 });
