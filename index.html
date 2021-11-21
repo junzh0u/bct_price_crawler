@@ -3,7 +3,9 @@
         <title>Bridge City Tools Price Tracker</title>
         <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.6.1/randomColor.min.js"
+            integrity="sha512-vPeZ7JCboHcfpqSx5ZD+/jpEhS4JpXxfz9orSvAPPj0EKUVShU2tgy7XkU+oujBJKnWmu4hU7r9MMQNWPfXsYw==" crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
     </head>
     <body>
         <canvas id="myChart"></canvas>
@@ -23,10 +25,13 @@
                     });
                     var datasets = products.map(p => {
                         var prices = dates.map(d => product2date2price[p][d]);
+                        var color = randomColor({seed: p});
                         return {
                             label: p,
                             data: prices,
                             hidden: (p != currentProduct),
+                            backgroundColor: color,
+                            borderColor: color,
                         };
                     });
                     const ctx = document.getElementById('myChart').getContext('2d');
